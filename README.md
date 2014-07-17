@@ -1,0 +1,4 @@
+ConfigurationMapper
+===================
+
+Configuration object mapping
