@@ -15,11 +15,43 @@ namespace ConfigurationMapper.Tests
         }
 
         [TestMethod]
-        public void AppSettings_CommonFeatures_WorkSuccessully()
+        public void AppSettings_PropertyNames_AreCaseInsensitive()
         {
-            var appSettings = ConfigurationMapper.Map<CommonAppSettings>();
+            var appSettings = ConfigurationMapper.Map<CaseInsensitiveAppSettings>();
             Assert.IsTrue(appSettings.IsCaseInsensitive);
+        }
+
+        [TestMethod]
+        public void AppSettings_PropertyNames_CanBeOverriden()
+        {
+            var appSettings = ConfigurationMapper.Map<PropertyNameOverridenAppSettings>();
             Assert.IsTrue(appSettings.EqualsProperty);
+        }
+
+        [TestMethod, ExpectedException(typeof(PropertyNotFoundException))]
+        public void AppSettings_MissingRequiredProperty_ThrowException()
+        {
+            var appSettings = ConfigurationMapper.Map<RequiredAppSettings>();
+        }
+
+        [TestMethod]
+        public void AppSettings_MissedRequiredPropertyWithDefaultValue_MappedSuccessfully()
+        {
+            var appSettings = ConfigurationMapper.Map<RequiredDefaultAppSettings>();
+            Assert.AreEqual(42, appSettings.RequiredProperty);
+        }
+
+        [TestMethod]
+        public void AppSettings_SpecifiedConfigValue_OverridesDefault()
+        {
+            var appSettings = ConfigurationMapper.Map<DefaultAppSettings>();
+            Assert.AreEqual("Configuration value", appSettings.DefaultProperty);
+        }
+
+        [TestMethod, ExpectedException(typeof(FormatException))]
+        public void AppSettings_InvalidDefaultValue_ThrowsException()
+        {
+            var appSettings = ConfigurationMapper.Map<InvalidDefaultAppSettings>();
         }
 
         [TestMethod]
@@ -88,7 +120,7 @@ namespace ConfigurationMapper.Tests
         public void AppSettings_UInt32Properties_MappedSuccessfully()
         {
             var appSettings = ConfigurationMapper.Map<UIntegerAppSetting<UInt32>>();
-            Assert.AreEqual((UInt32)42, appSettings.PositiveInteger);
+            Assert.AreEqual(42U, appSettings.PositiveInteger);
         }
 
 
@@ -104,7 +136,7 @@ namespace ConfigurationMapper.Tests
         public void AppSettings_UInt64Properties_MappedSuccessfully()
         {
             var appSettings = ConfigurationMapper.Map<UIntegerAppSetting<UInt64>>();
-            Assert.AreEqual((UInt64)42, appSettings.PositiveInteger);
+            Assert.AreEqual(42UL, appSettings.PositiveInteger);
         }
 
 
@@ -130,21 +162,65 @@ namespace ConfigurationMapper.Tests
             Assert.AreEqual("Test string", appSettings.SimpleString);
             Assert.AreEqual(String.Empty, appSettings.EmptyString);
         }
+
+        #region Private classes for test puproses.
         /// <summary>
-        /// Class for testing common mapping features for app settings.
+        /// Class for testing properties case insensitivity.
         /// </summary>
-        private class CommonAppSettings
+        private class CaseInsensitiveAppSettings
+        {
+            /// <summary>
+            /// Property with name in different case than in appSettings.
+            /// </summary>
+            public Boolean IsCaseInsensitive { get; set; }
+        }
+
+        /// <summary>
+        /// Class for testing property name override.
+        /// </summary>
+        private class PropertyNameOverridenAppSettings
         {
             /// <summary>
             /// Property with overriden name.
             /// </summary>
             [AppSetting(Key = "Equals")]
             public Boolean EqualsProperty { get; set; }
+        }
 
-            /// <summary>
-            /// Property with name in different case than in appSettings.
-            /// </summary>
-            public Boolean IsCaseInsensitive { get; set; }
+        /// <summary>
+        /// Class for testing IsRequired flag for missing property.
+        /// </summary>
+        private class RequiredAppSettings
+        {
+            [AppSetting(IsRequired = true)]
+            public Int32 RequiredProperty { get; set; }
+        }
+
+        /// <summary>
+        /// Class for testing IsRequired flag for missing property with default value.
+        /// </summary>
+        private class RequiredDefaultAppSettings
+        {
+            [AppSetting(IsRequired = true, DefaultValue = "42")]
+            public Int32 RequiredProperty { get; set; }
+        }
+
+        /// <summary>
+        /// Class for testing that configuration value overrides default.
+        /// </summary>
+        private class DefaultAppSettings
+        {
+            [AppSetting(DefaultValue = "Default value")]
+            public string DefaultProperty { get; set; }
+        }
+
+        /// <summary>
+        /// Class for testing invalid default value.
+        /// </summary>
+        private class InvalidDefaultAppSettings
+        {
+            [AppSetting(DefaultValue = "Test")]
+            public bool InvalidBooleanProperty { get; set; }
         }
 
         /// <summary>
@@ -269,7 +345,7 @@ namespace ConfigurationMapper.Tests
         /// Generic class for simple integer test classes. Just to play with generics.
         /// </summary>
         /// <typeparam name="T">T is IConvertible structure.</typeparam>
-        private class UIntegerAppSetting<T> where T: struct, IConvertible
+        private class UIntegerAppSetting<T> where T : struct, IConvertible
         {
             /// <summary>
             /// Property having positive value of T type.
@@ -277,12 +353,13 @@ namespace ConfigurationMapper.Tests
             public T PositiveInteger { get; set; }
         }
 
-        private class IntegerAppSetting<T>: UIntegerAppSetting<T> where T: struct, IConvertible
+        private class IntegerAppSetting<T> : UIntegerAppSetting<T> where T : struct, IConvertible
         {
             /// <summary>
             /// Property having negative value of T type.
             /// </summary>
             public T NegativeInteger { get; set; }
         }
+        #endregion
     }
 }

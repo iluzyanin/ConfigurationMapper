@@ -15,9 +15,19 @@ namespace ConfigurationMapper
         public string Key { get; set; }
 
         /// <summary>
-        /// Name of culture used in DateTime property mapping. Default is current thread culture.
-        /// Ignored for non-DateTime properties.
+        /// Name of culture used in properties mapping. Default is current thread culture.
         /// </summary>
-        public string CultureName {get; set;}       
+        public string CultureName { get; set; }
+
+        /// <summary>
+        /// Determines whether the property is required.
+        /// </summary>
+        public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// Default value. Must be convertible to property type, otherwise exception will be thown on mapping
+        /// stage.
+        /// </summary>
+        public string DefaultValue { get; set; }
     }
 }
