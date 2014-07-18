@@ -48,6 +48,19 @@ namespace ConfigurationMapper
                     property.SetValue(result, TypeDescriptor.GetConverter(propertyType)
                         .ConvertFromString(null, cultureInfo, propertyValue));
                 }
+                else 
+                if (propertyType.IsArray)
+                {
+                    var delimiter = attribute != null && attribute.ArrayDelimiter != null
+                        ? attribute.ArrayDelimiter
+                        : ",";
+                    var values = propertyValue.Split(new[] { delimiter }, StringSplitOptions.None);
+                    var typeArray = Array.CreateInstance(propertyType.GetElementType(), values.Length);
+                    for (var i = 0; i < values.Length; i++)
+                        typeArray.SetValue(TypeDescriptor.GetConverter(propertyType.GetElementType())
+                                .ConvertFromString(null, cultureInfo, values[i]), i);
+                    property.SetValue(result, typeArray);
+                }
             }
 
             return result;

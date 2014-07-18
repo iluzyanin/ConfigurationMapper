@@ -38,20 +38,51 @@ namespace ConfigurationMapper.Tests
         public void AppSettings_MissedRequiredPropertyWithDefaultValue_MappedSuccessfully()
         {
             var appSettings = ConfigurationMapper.Map<RequiredDefaultAppSettings>();
-            Assert.AreEqual(42, appSettings.RequiredProperty);
+            Assert.AreEqual(42, appSettings.Required);
         }
 
         [TestMethod]
         public void AppSettings_SpecifiedConfigValue_OverridesDefault()
         {
             var appSettings = ConfigurationMapper.Map<DefaultAppSettings>();
-            Assert.AreEqual("Configuration value", appSettings.DefaultProperty);
+            Assert.AreEqual("Configuration value", appSettings.Default);
         }
 
         [TestMethod, ExpectedException(typeof(FormatException))]
         public void AppSettings_InvalidDefaultValue_ThrowsException()
         {
             var appSettings = ConfigurationMapper.Map<InvalidDefaultAppSettings>();
+        }
+
+        [TestMethod]
+        public void AppSettings_ArrayProperties_MappedSuccessfully()
+        {
+            var appSettings = ConfigurationMapper.Map<ArrayAppSettings>();
+            Assert.AreEqual(3, appSettings.Int32Array.Length);
+            Assert.AreEqual(2, appSettings.Int32Array[0]);
+            Assert.AreEqual(5, appSettings.Int32Array[1]);
+            Assert.AreEqual(42, appSettings.Int32Array[2]);
+        }
+
+        [TestMethod]
+        public void AppSettings_ArrayPropertiesWithCustomDelimiter_MappedSuccessfully()
+        {
+            var appSettings = ConfigurationMapper.Map<ArrayCustomDelimiterAppSettings>();
+            Assert.AreEqual(3, appSettings.Int32ArrayCustomDelimiter.Length);
+            Assert.AreEqual(2, appSettings.Int32ArrayCustomDelimiter[0]);
+            Assert.AreEqual(5, appSettings.Int32ArrayCustomDelimiter[1]);
+            Assert.AreEqual(42, appSettings.Int32ArrayCustomDelimiter[2]);
+        }
+
+        [TestMethod]
+        public void AppSettings_ArrayPropertiesWithDefaultValues_MappedSuccessfully()
+        {
+            var appSettings = ConfigurationMapper.Map<ArrayDefaultAppSettings>();
+            Assert.AreEqual(4, appSettings.BooleanDefaultArray.Length);
+            Assert.IsTrue(appSettings.BooleanDefaultArray[0]);
+            Assert.IsTrue(appSettings.BooleanDefaultArray[1]);
+            Assert.IsFalse(appSettings.BooleanDefaultArray[2]);
+            Assert.IsFalse(appSettings.BooleanDefaultArray[3]);
         }
 
         [TestMethod]
@@ -193,7 +224,7 @@ namespace ConfigurationMapper.Tests
         private class RequiredAppSettings
         {
             [AppSetting(IsRequired = true)]
-            public Int32 RequiredProperty { get; set; }
+            public Int32 Required { get; set; }
         }
 
         /// <summary>
@@ -202,7 +233,7 @@ namespace ConfigurationMapper.Tests
         private class RequiredDefaultAppSettings
         {
             [AppSetting(IsRequired = true, DefaultValue = "42")]
-            public Int32 RequiredProperty { get; set; }
+            public Int32 Required { get; set; }
         }
 
         /// <summary>
@@ -211,7 +242,7 @@ namespace ConfigurationMapper.Tests
         private class DefaultAppSettings
         {
             [AppSetting(DefaultValue = "Default value")]
-            public string DefaultProperty { get; set; }
+            public string Default { get; set; }
         }
 
         /// <summary>
@@ -220,7 +251,33 @@ namespace ConfigurationMapper.Tests
         private class InvalidDefaultAppSettings
         {
             [AppSetting(DefaultValue = "Test")]
-            public bool InvalidBooleanProperty { get; set; }
+            public bool InvalidBoolean { get; set; }
+        }
+
+        /// <summary>
+        /// Class for testing array properties.
+        /// </summary>
+        private class ArrayAppSettings
+        {
+            public Int32[] Int32Array { get; set; }
+        }
+
+        /// <summary>
+        /// Class for testing array properties with custom delimiter.
+        /// </summary>
+        private class ArrayCustomDelimiterAppSettings
+        {
+            [AppSetting(ArrayDelimiter="; ")]
+            public Int32[] Int32ArrayCustomDelimiter { get; set; }
+        }
+
+        /// <summary>
+        /// Class for testing array with default value.
+        /// </summary>
+        private class ArrayDefaultAppSettings
+        {
+            [AppSetting(DefaultValue="true,True,false,False")]
+            public Boolean[] BooleanDefaultArray { get; set; }
         }
 
         /// <summary>

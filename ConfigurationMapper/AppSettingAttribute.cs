@@ -29,5 +29,10 @@ namespace ConfigurationMapper
         /// stage.
         /// </summary>
         public string DefaultValue { get; set; }
+
+        /// <summary>
+        /// Array delimiter. Default is comma. Ignored for non-array properties.
+        /// </summary>
+        public string ArrayDelimiter { get; set; }
     }
 }
