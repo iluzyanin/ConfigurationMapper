@@ -17,47 +17,47 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_PropertyNames_AreCaseInsensitive()
         {
-            var appSettings = ConfigurationMapper.Map<CaseInsensitiveAppSettings>();
+            var appSettings = ConfigurationMapper<CaseInsensitiveAppSettings>.Map();
             Assert.IsTrue(appSettings.IsCaseInsensitive);
         }
 
         [TestMethod]
         public void AppSettings_PropertyNames_CanBeOverriden()
         {
-            var appSettings = ConfigurationMapper.Map<PropertyNameOverridenAppSettings>();
+            var appSettings = ConfigurationMapper<PropertyNameOverridenAppSettings>.Map();
             Assert.IsTrue(appSettings.EqualsProperty);
         }
 
         [TestMethod, ExpectedException(typeof(PropertyNotFoundException))]
         public void AppSettings_MissingRequiredProperty_ThrowException()
         {
-            var appSettings = ConfigurationMapper.Map<RequiredAppSettings>();
+            var appSettings = ConfigurationMapper<RequiredAppSettings>.Map();
         }
 
         [TestMethod]
         public void AppSettings_MissedRequiredPropertyWithDefaultValue_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<RequiredDefaultAppSettings>();
+            var appSettings = ConfigurationMapper<RequiredDefaultAppSettings>.Map();
             Assert.AreEqual(42, appSettings.Required);
         }
 
         [TestMethod]
         public void AppSettings_SpecifiedConfigValue_OverridesDefault()
         {
-            var appSettings = ConfigurationMapper.Map<DefaultAppSettings>();
+            var appSettings = ConfigurationMapper<DefaultAppSettings>.Map();
             Assert.AreEqual("Configuration value", appSettings.Default);
         }
 
         [TestMethod, ExpectedException(typeof(FormatException))]
         public void AppSettings_InvalidDefaultValue_ThrowsException()
         {
-            var appSettings = ConfigurationMapper.Map<InvalidDefaultAppSettings>();
+            var appSettings = ConfigurationMapper<InvalidDefaultAppSettings>.Map();
         }
 
         [TestMethod]
         public void AppSettings_ArrayProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<ArrayAppSettings>();
+            var appSettings = ConfigurationMapper<ArrayAppSettings>.Map();
             Assert.AreEqual(3, appSettings.Int32Array.Length);
             Assert.AreEqual(2, appSettings.Int32Array[0]);
             Assert.AreEqual(5, appSettings.Int32Array[1]);
@@ -67,7 +67,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_ArrayPropertiesWithCustomDelimiter_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<ArrayCustomDelimiterAppSettings>();
+            var appSettings = ConfigurationMapper<ArrayCustomDelimiterAppSettings>.Map();
             Assert.AreEqual(3, appSettings.Int32ArrayCustomDelimiter.Length);
             Assert.AreEqual(2, appSettings.Int32ArrayCustomDelimiter[0]);
             Assert.AreEqual(5, appSettings.Int32ArrayCustomDelimiter[1]);
@@ -77,7 +77,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_ArrayPropertiesWithDefaultValues_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<ArrayDefaultAppSettings>();
+            var appSettings = ConfigurationMapper<ArrayDefaultAppSettings>.Map();
             Assert.AreEqual(4, appSettings.BooleanDefaultArray.Length);
             Assert.IsTrue(appSettings.BooleanDefaultArray[0]);
             Assert.IsTrue(appSettings.BooleanDefaultArray[1]);
@@ -88,7 +88,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_BooleanProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<BooleanAppSettings>();
+            var appSettings = ConfigurationMapper<BooleanAppSettings>.Map();
             Assert.IsTrue(appSettings.BooleanUpperCase);
             Assert.IsTrue(appSettings.BooleanLowerCase);
             Assert.IsTrue(appSettings.BooleanMixedCase);
@@ -98,7 +98,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_DateTimeProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<DateTimeAppSettings>();
+            var appSettings = ConfigurationMapper<DateTimeAppSettings>.Map();
             Assert.AreEqual(new DateTime(2014, 07, 15, 18, 48, 12), appSettings.DateTimeDefault);
             Assert.AreEqual(new DateTime(2014, 07, 15, 18, 48, 12), appSettings.DateTimeOnlyCulture);
             Assert.AreEqual(new DateTime(2014, 07, 15), appSettings.DateTimeEnShortDate);
@@ -109,7 +109,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_DoubleProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<DoubleAppSettings>();
+            var appSettings = ConfigurationMapper<DoubleAppSettings>.Map();
             Assert.AreEqual(12.34, appSettings.DoubleEn);
             Assert.AreEqual(12.34, appSettings.DoubleRu);
             Assert.AreEqual(1.7E+3, appSettings.DoubleEForm);
@@ -118,7 +118,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_SingleProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<SingleAppSettings>();
+            var appSettings = ConfigurationMapper<SingleAppSettings>.Map();
             Assert.AreEqual(12.34f, appSettings.SingleEn);
             Assert.AreEqual(12.34f, appSettings.SingleRu);
             Assert.AreEqual(1.7E+3f, appSettings.SingleEForm);
@@ -127,7 +127,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_SByteProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<IntegerAppSetting<SByte>>();
+            var appSettings = ConfigurationMapper<IntegerAppSetting<SByte>>.Map();
             Assert.AreEqual(42, appSettings.PositiveInteger);
             Assert.AreEqual(-42, appSettings.NegativeInteger);
         }
@@ -135,7 +135,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_DecimalProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<IntegerAppSetting<Decimal>>();
+            var appSettings = ConfigurationMapper<IntegerAppSetting<Decimal>>.Map();
             Assert.AreEqual(42, appSettings.PositiveInteger);
             Assert.AreEqual(-42, appSettings.NegativeInteger);
         }
@@ -143,14 +143,14 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_UInt16Properties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<UIntegerAppSetting<UInt16>>();
+            var appSettings = ConfigurationMapper<UIntegerAppSetting<UInt16>>.Map();
             Assert.AreEqual(42, appSettings.PositiveInteger);
         }
 
         [TestMethod]
         public void AppSettings_UInt32Properties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<UIntegerAppSetting<UInt32>>();
+            var appSettings = ConfigurationMapper<UIntegerAppSetting<UInt32>>.Map();
             Assert.AreEqual(42U, appSettings.PositiveInteger);
         }
 
@@ -158,7 +158,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_Int32Properties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<IntegerAppSetting<Int32>>();
+            var appSettings = ConfigurationMapper<IntegerAppSetting<Int32>>.Map();
             Assert.AreEqual(42, appSettings.PositiveInteger);
             Assert.AreEqual(-42, appSettings.NegativeInteger);
         }
@@ -166,7 +166,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_UInt64Properties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<UIntegerAppSetting<UInt64>>();
+            var appSettings = ConfigurationMapper<UIntegerAppSetting<UInt64>>.Map();
             Assert.AreEqual(42UL, appSettings.PositiveInteger);
         }
 
@@ -174,7 +174,7 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_Int64Properties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<IntegerAppSetting<Int64>>();
+            var appSettings = ConfigurationMapper<IntegerAppSetting<Int64>>.Map();
             Assert.AreEqual(42, appSettings.PositiveInteger);
             Assert.AreEqual(-42, appSettings.NegativeInteger);
         }
@@ -182,14 +182,14 @@ namespace ConfigurationMapper.Tests
         [TestMethod]
         public void AppSettings_CharProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<CharAppSettings>();
+            var appSettings = ConfigurationMapper<CharAppSettings>.Map();
             Assert.AreEqual('c', appSettings.SimpleChar);
         }
 
         [TestMethod]
         public void AppSettings_StringProperties_MappedSuccessfully()
         {
-            var appSettings = ConfigurationMapper.Map<StringAppSettings>();
+            var appSettings = ConfigurationMapper<StringAppSettings>.Map();
             Assert.AreEqual("Test string", appSettings.SimpleString);
             Assert.AreEqual(String.Empty, appSettings.EmptyString);
         }
