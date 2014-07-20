@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 
@@ -16,6 +17,8 @@ namespace ConfigurationMapper
         
         public static T Map(string configPath)
         {
+            if (!File.Exists(configPath))
+                throw new FileNotFoundException(Errors.ConfigurationFileNotFound, configPath);
             var configFileMap = new ExeConfigurationFileMap();
             configFileMap.ExeConfigFilename = configPath;
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, 

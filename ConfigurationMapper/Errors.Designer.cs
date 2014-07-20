@@ -61,6 +61,15 @@ namespace ConfigurationMapper {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration file was not found..
+        /// </summary>
+        internal static string ConfigurationFileNotFound {
+            get {
+                return ResourceManager.GetString("ConfigurationFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property &quot;{0}&quot; is required but was not found in configuration file and has no default value..
         /// </summary>
         internal static string PropertyNotFound {

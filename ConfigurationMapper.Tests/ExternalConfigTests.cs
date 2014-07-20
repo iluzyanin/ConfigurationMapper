@@ -18,6 +18,13 @@ namespace ConfigurationMapper.Tests
             Assert.AreEqual(42, appSettings.Integer);
         }
 
+        [TestMethod, ExpectedException(typeof(FileNotFoundException))]
+        public void ExternalNonExistentConfig_ThrowsException()
+        {
+            var configPath = (@"nonexistent.config");
+            var appSettings = ConfigurationMapper<ExternalAppSettings>.Map(configPath);
+        }
+
         /// <summary>
         /// Class for testing external configuration mapping.
         /// </summary>
