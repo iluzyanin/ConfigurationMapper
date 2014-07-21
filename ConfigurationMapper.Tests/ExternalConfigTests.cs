@@ -33,10 +33,12 @@ namespace ConfigurationMapper.Tests
             /// <summary>
             /// Boolean property.
             /// </summary>
+            [AppSetting]
             public Boolean Boolean { get; set; }
             /// <summary>
             /// Integer property.
             /// </summary>
+            [AppSetting]
             public Int32 Integer { get; set; }
         }
     }

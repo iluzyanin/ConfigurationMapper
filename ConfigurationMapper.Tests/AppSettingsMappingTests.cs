@@ -203,6 +203,7 @@ namespace ConfigurationMapper.Tests
             /// <summary>
             /// Property with name in different case than in appSettings.
             /// </summary>
+            [AppSetting]
             public Boolean IsCaseInsensitive { get; set; }
         }
 
@@ -259,6 +260,7 @@ namespace ConfigurationMapper.Tests
         /// </summary>
         private class ArrayAppSettings
         {
+            [AppSetting]
             public Int32[] Int32Array { get; set; }
         }
 
@@ -288,18 +290,22 @@ namespace ConfigurationMapper.Tests
             /// <summary>
             /// Property with value in UPPER case.
             /// </summary>
+            [AppSetting]
             public Boolean BooleanUpperCase { get; set; }
             /// <summary>
             /// Property with value in lower case.
             /// </summary>
+            [AppSetting]
             public Boolean BooleanLowerCase { get; set; }
             /// <summary>
             /// Property with value in mIxEd case.
             /// </summary>
+            [AppSetting]
             public Boolean BooleanMixedCase { get; set; }
             /// <summary>
             /// Property with "false" value.
             /// </summary>
+            [AppSetting]
             public Boolean BooleanFalse { get; set; }
         }
 
@@ -311,11 +317,13 @@ namespace ConfigurationMapper.Tests
             /// <summary>
             /// Property with sortable DateTime value, understandable by various cultures.
             /// </summary>
+            [AppSetting]
             public DateTime DateTimeDefault { get; set; }
 
             /// <summary>
             /// Property with date value in short format.
             /// </summary>
+            [AppSetting]
             public DateTime DateTimeEnShortDate { get; set; }
 
             /// <summary>
@@ -351,11 +359,13 @@ namespace ConfigurationMapper.Tests
             /// <summary>
             /// Property with double value in default (English) culture.
             /// </summary>
+            [AppSetting]
             public Double DoubleEn { get; set; }
 
             /// <summary>
             /// Property with double value in form x.xE+x.
             /// </summary>
+            [AppSetting]
             public Double DoubleEForm { get; set; }
         }
 
@@ -373,11 +383,13 @@ namespace ConfigurationMapper.Tests
             /// <summary>
             /// Property with float value in default (English) culture.
             /// </summary>
+            [AppSetting]
             public Single SingleEn { get; set; }
 
             /// <summary>
             /// Property with float value in form x.xE+x.
             /// </summary>
+            [AppSetting]
             public Single SingleEForm { get; set; }
         }
 
@@ -386,6 +398,7 @@ namespace ConfigurationMapper.Tests
         /// </summary>
         private class CharAppSettings
         {
+            [AppSetting]
             public Char SimpleChar { get; set; }
         }
 
@@ -394,7 +407,9 @@ namespace ConfigurationMapper.Tests
         /// </summary>
         private class StringAppSettings
         {
+            [AppSetting]
             public String SimpleString { get; set; }
+            [AppSetting]
             public String EmptyString { get; set; }
         }
 
@@ -407,6 +422,7 @@ namespace ConfigurationMapper.Tests
             /// <summary>
             /// Property having positive value of T type.
             /// </summary>
+            [AppSetting]
             public T PositiveInteger { get; set; }
         }
 
@@ -415,6 +431,7 @@ namespace ConfigurationMapper.Tests
             /// <summary>
             /// Property having negative value of T type.
             /// </summary>
+            [AppSetting]
             public T NegativeInteger { get; set; }
         }
         #endregion

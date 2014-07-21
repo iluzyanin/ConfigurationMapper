@@ -35,32 +35,28 @@ namespace ConfigurationMapper
             
             foreach (var property in properties)
             {
-                var attribute = property.GetCustomAttributes(typeof(AppSettingAttribute), false)
+                var appSettingsAttribute = property.GetCustomAttributes(typeof(AppSettingAttribute), false)
                     .FirstOrDefault() as AppSettingAttribute;
-                var key = attribute != null && !String.IsNullOrWhiteSpace(attribute.Key)
-                    ? attribute.Key : property.Name;
+                // AppSetting attribute is mandatory for property to be mapped.
+                if (appSettingsAttribute == null)
+                    continue;
+
+                var key = String.IsNullOrWhiteSpace(appSettingsAttribute.Key)
+                    ? property.Name : appSettingsAttribute.Key;
                 var propertyType = property.PropertyType;
                 var propertyValue = appSettings.Settings[key] == null 
                     ? null : appSettings.Settings[key].Value;
                 if (propertyValue == null)
                 {
-                    // If there is no app setting with such key and no instructions for it then just skip it.
-                    if (attribute == null)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        if (attribute.IsRequired && attribute.DefaultValue == null)
-                            throw new PropertyNotFoundException(key);
+                    if (appSettingsAttribute.IsRequired && appSettingsAttribute.DefaultValue == null)
+                        throw new PropertyNotFoundException(key);
 
-                        propertyValue = attribute.DefaultValue;
-                    }
+                    propertyValue = appSettingsAttribute.DefaultValue;
                 }
 
-                var cultureInfo = attribute != null && !String.IsNullOrWhiteSpace(attribute.CultureName)
-                    ? CultureInfo.GetCultureInfo(attribute.CultureName)
-                    : Thread.CurrentThread.CurrentCulture;
+                var cultureInfo = String.IsNullOrWhiteSpace(appSettingsAttribute.CultureName)
+                    ? Thread.CurrentThread.CurrentCulture
+                    : CultureInfo.GetCultureInfo(appSettingsAttribute.CultureName);
 
                 if (propertyType.GetInterfaces().Contains(typeof(IConvertible)))
                 {
@@ -70,8 +66,8 @@ namespace ConfigurationMapper
                 else
                     if (propertyType.IsArray)
                     {
-                        var delimiter = attribute != null && attribute.ArrayDelimiter != null
-                            ? attribute.ArrayDelimiter
+                        var delimiter = appSettingsAttribute.ArrayDelimiter != null
+                            ? appSettingsAttribute.ArrayDelimiter
                             : ",";
                         var values = propertyValue.Split(new[] { delimiter }, StringSplitOptions.None);
                         var typeArray = Array.CreateInstance(propertyType.GetElementType(), values.Length);
