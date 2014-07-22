@@ -3,7 +3,7 @@
 namespace ConfigurationMapper
 {
     /// <summary>
-    /// Attribute for customizing mapping process.
+    /// Attribute for app settings mapping.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class AppSettingAttribute : Attribute

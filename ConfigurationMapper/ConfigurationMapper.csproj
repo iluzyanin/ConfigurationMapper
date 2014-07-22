@@ -42,12 +42,14 @@
   <ItemGroup>
     <Compile Include="AppSettingAttribute.cs" />
     <Compile Include="ConfigurationMapper.cs" />
+    <Compile Include="ConnectionStringAttribute.cs" />
     <Compile Include="Errors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyInfoExtensions.cs" />
     <Compile Include="PropertyNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
