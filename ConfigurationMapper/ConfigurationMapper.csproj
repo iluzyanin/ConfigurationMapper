@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppSettingAttribute.cs" />
+    <Compile Include="Attributes\AppSettingAttribute.cs" />
+    <Compile Include="Attributes\ConfigSectionAttribute.cs" />
     <Compile Include="ConfigurationMapper.cs" />
-    <Compile Include="ConnectionStringAttribute.cs" />
+    <Compile Include="Attributes\ConnectionStringAttribute.cs" />
     <Compile Include="Errors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -50,6 +51,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyInfoExtensions.cs" />
+    <Compile Include="ConfigurationSectionInvalidTypeException.cs" />
     <Compile Include="PropertyNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>

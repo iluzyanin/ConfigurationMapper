@@ -78,28 +78,63 @@ namespace ConfigurationMapper
 
 			if (connectionStringsAttribute == null)
 				return;
-				var name = String.IsNullOrWhiteSpace(connectionStringsAttribute.Name)
-					? property.Name : connectionStringsAttribute.Name;
-				var propertyType = property.PropertyType;
-				var propertyValue = connectionStrings.ConnectionStrings[name] == null
-					? null : connectionStrings.ConnectionStrings[name].ConnectionString;
-				if (propertyValue == null)
-				{
-					if (connectionStringsAttribute.IsRequired &&
-						connectionStringsAttribute.DefaultValue == null)
-						throw new PropertyNotFoundException(name);
+			var name = String.IsNullOrWhiteSpace(connectionStringsAttribute.Name)
+				? property.Name : connectionStringsAttribute.Name;
+			var propertyType = property.PropertyType;
+			var propertyValue = connectionStrings.ConnectionStrings[name] == null
+				? null : connectionStrings.ConnectionStrings[name].ConnectionString;
+			if (propertyValue == null)
+			{
+				if (connectionStringsAttribute.IsRequired &&
+					connectionStringsAttribute.DefaultValue == null)
+					throw new PropertyNotFoundException(name);
 
-					propertyValue = connectionStringsAttribute.DefaultValue;
-				}
+				propertyValue = connectionStringsAttribute.DefaultValue;
+			}
 
-				if (propertyType == typeof(SqlConnectionStringBuilder))
+			if (propertyType == typeof(SqlConnectionStringBuilder))
+			{
+				property.SetValue(obj, new SqlConnectionStringBuilder(propertyValue));
+			}
+			else
+			{
+				property.SetValue(obj, propertyValue);
+			}
+		}
+
+		/// <summary>
+		/// Sets the "configuration section" property value of a specified object.
+		/// </summary>
+		/// <param name="property">Property to set.</param>
+		/// <param name="obj">The object whose property value will be set.</param>
+		/// <param name="connectionStrings">Configuration section to assign.</param>
+		public static void SetConfigSectionValue(this PropertyInfo property, object obj, Configuration 
+			configuration)
+		{
+			var configSectionAttribute = property.GetCustomAttributes(
+				typeof(ConfigSectionAttribute), false).FirstOrDefault() as ConfigSectionAttribute;
+
+			if (configSectionAttribute == null)
+				return;
+
+			var name = String.IsNullOrWhiteSpace(configSectionAttribute.Name)
+				? property.Name : configSectionAttribute.Name;
+			var propertyType = property.PropertyType;
+			var propertyValue = configuration.GetSection(name);
+			if (propertyValue != null)
+			{
+				if (propertyValue.GetType() != propertyType)
 				{
-					property.SetValue(obj, new SqlConnectionStringBuilder(propertyValue));
+					throw new ConfigurationSectionInvalidTypeException(propertyValue.GetType(), 
+						propertyType);
 				}
-				else
-				{
-					property.SetValue(obj, propertyValue);
-				}
+				property.SetValue(obj, propertyValue);
+			}
+			else
+			{
+				if (configSectionAttribute.IsRequired)
+					throw new PropertyNotFoundException(name);
+			}
 		}
 	}
 }

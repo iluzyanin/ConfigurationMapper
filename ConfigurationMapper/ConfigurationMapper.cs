@@ -33,9 +33,10 @@ namespace ConfigurationMapper
             {
 				property.SetAppSettingValue(result, appSettings);
 				property.SetConnectionStringValue(result, connectionStrings);
+				property.SetConfigSectionValue(result, configuration);
             }
 
-            return result;
+			return result;
         }
     }
 }

@@ -70,6 +70,15 @@ namespace ConfigurationMapper {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property type {0} differs from configuration section type {1}..
+        /// </summary>
+        internal static string ConfigurationSectionTypeMismatch {
+            get {
+                return ResourceManager.GetString("ConfigurationSectionTypeMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property &quot;{0}&quot; is required but was not found in configuration file and has no default value..
         /// </summary>
         internal static string PropertyNotFound {

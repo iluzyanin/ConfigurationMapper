@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using ConfigurationMapper.Tests.ConfigSections;
 
 namespace ConfigurationMapper.Tests
 {
@@ -25,6 +26,18 @@ namespace ConfigurationMapper.Tests
             var appSettings = ConfigurationMapper<ExternalAppSettings>.Map(configPath);
         }
 
+		[TestMethod]
+		public void ConfigSections_PersonsConfigSection_MappedSuccessfully()
+		{
+			var configPath = Path.Combine(
+				Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName,
+				@"TestConfig\external.config");
+			var configuration = ConfigurationMapper<ExternalConfigSection>.Map(configPath);
+			Assert.AreEqual(2, configuration.PersonConfiguration.PersonElements.Count);
+			Assert.AreEqual("http://sometesturl.com", configuration.PersonConfiguration.SettingsElement.
+				ServiceUrl);
+		}
+
         /// <summary>
         /// Class for testing external configuration mapping.
         /// </summary>
@@ -41,5 +54,14 @@ namespace ConfigurationMapper.Tests
             [AppSetting]
             public Int32 Integer { get; set; }
         }
+
+		/// <summary>
+		/// Class for testing config section mapping from external config.
+		/// </summary>
+		private class ExternalConfigSection
+		{
+			[ConfigSection(Name = "personConfig")]
+			public PersonConfigSection PersonConfiguration { get; set; }
+		}
     }
 }

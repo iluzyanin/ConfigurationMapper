@@ -120,6 +120,9 @@
   <data name="ConfigurationFileNotFound" xml:space="preserve">
     <value>Configuration file was not found.</value>
   </data>
+  <data name="ConfigurationSectionTypeMismatch" xml:space="preserve">
+    <value>Property type {0} differs from configuration section type {1}.</value>
+  </data>
   <data name="PropertyNotFound" xml:space="preserve">
     <value>Property "{0}" is required but was not found in configuration file and has no default value.</value>
   </data>
