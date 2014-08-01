@@ -17,31 +17,31 @@ AppSetting attribute has the following parameters:
 ####Sample:####
 
 Consider we have the following appSettings in our configuration file:
-
-    <appSettings>
-        <add key="ProjectSetting1" value="Hello!"/>
-        <add key="Equals" value="True"/>        
-    </appSettings>
-
+```markup
+<appSettings>
+    <add key="ProjectSetting1" value="Hello!"/>
+    <add key="Equals" value="True"/>        
+</appSettings>
+```
 These settings can be mapped as follows:
-
-    public class ProjectConfiguration
-    {
-      [AppSetting]
-      public string ProjectSetting1 { get; set; }
+```csharp
+public class ProjectConfiguration
+{
+  [AppSetting]
+  public string ProjectSetting1 { get; set; }
       
-      [AppSetting(IsRequired = true, DefaultValue= 2)]
-      public int ProjectSetting2 { get; set; }
+  [AppSetting(IsRequired = true, DefaultValue= 2)]
+  public int ProjectSetting2 { get; set; }
       
-      [AppSetting(Key = "Equals")]
-      public bool ProjectSetting3 { get; set; }
-    }
-    ...
-    var config = ConfigurationMapper<ProjectConfiguration>.Map();
-    Console.WriteLine(config.ProjectSetting1); // "Hello!"
-    Console.WriteLine(config.ProjectSetting2); // "2". NOTE: This property was not found in config but has default value, so it is mapped successfully.
-    Console.WriteLine(config.ProjectSetting3); // "true"
-
+  [AppSetting(Key = "Equals")]
+  public bool ProjectSetting3 { get; set; }
+}
+...
+var config = ConfigurationMapper<ProjectConfiguration>.Map();
+Console.WriteLine(config.ProjectSetting1); // "Hello!"
+Console.WriteLine(config.ProjectSetting2); // "2". NOTE: This property was not found in config but has default value, so it is mapped successfully.
+Console.WriteLine(config.ProjectSetting3); // "true"
+```
 ###`ConnectionString` attribute:###
 ConnectionString attribute has the following parameters:
 * string `Name` - used in connection string lookup process. If Name is null or empty, property name is used.
@@ -51,40 +51,41 @@ ConnectionString attribute has the following parameters:
 ####Sample:####
 
 Consider we have the following connectionStrings in our configuration file:
-
-    <connectionStrings>
-        <add name="PlainCS" connectionString="Data Source=(local);Initial Catalog=TestDB1;Integrated Security=True" providerName="System.Data.SqlClient" />
-        <add name="Equals" connectionString="Data Source=(local);Initial Catalog=TestDB2;Integrated Security=True" providerName="System.Data.SqlClient" />
-    </connectionStrings>
-
+```markup
+<connectionStrings>
+    <add name="PlainCS" connectionString="Data Source=(local);Initial Catalog=TestDB1;Integrated Security=True" providerName="System.Data.SqlClient" />
+    <add name="Equals" connectionString="Data Source=(local);Initial Catalog=TestDB2;Integrated Security=True" providerName="System.Data.SqlClient" />
+</connectionStrings>
+```
 These connection strings can be mapped as follows:
-
-    public class ProjectConfiguration
-    {
-      [ConnectionString]
-      public string PlainCS { get; set; }
-      
-      [ConnectionString(Name = "Equals")]
-      public string OverridenName { get; set; }
-    }
-    ...
-    var config = ConfigurationMapper<ProjectConfiguration>.Map();
-    Console.WriteLine(config.PlainCS); // "Data Source=(local);Initial Catalog=TestDB1;Integrated Security=True".
-    Console.WriteLine(config.OverridenName); // "Data Source=(local);Initial Catalog=TestDB2;Integrated Security=True".
-
+```csharp
+public class ProjectConfiguration
+{
+  [ConnectionString]
+  public string PlainCS { get; set; }
+  
+  [ConnectionString(Name = "Equals")]
+  public string OverridenName { get; set; }
+}
+...
+var config = ConfigurationMapper<ProjectConfiguration>.Map();
+Console.WriteLine(config.PlainCS); // "Data Source=(local);Initial Catalog=TestDB1;Integrated Security=True".
+Console.WriteLine(config.OverridenName); // "Data Source=(local);Initial Catalog=TestDB2;Integrated Security=True".
+```
 You can also map connection string to  [SqlConnectionStringBuilder](http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnectionstringbuilder(v=vs.110).aspx) type. For example, you have the following connectionStrings in our configuration file:
-
-    <connectionStrings>
-        <add name="ProjectSetting1" connectionString="Data Source=(local);Initial Catalog=TestDB3;Integrated Security=True" providerName="System.Data.SqlClient" />
-    </connectionStrings>
-
+```markup
+<connectionStrings>
+    <add name="ProjectSetting1" connectionString="Data Source=(local);Initial Catalog=TestDB3;Integrated Security=True" providerName="System.Data.SqlClient" />
+</connectionStrings>
+```
 Then map this connection string as follows:
-
-    public class ProjectConfiguration
-    {
-        [ConnectionString]
-        public SqlConnectionStringBuilder ProjectSetting1 { get; set; }
-    }
-    ...
-    var config = ConfigurationMapper<ProjectConfiguration>.Map();
-    Console.WriteLine(config.ProjectSetting1.InitialCatalog); // "TestDB3".
+```csharp
+public class ProjectConfiguration
+{
+    [ConnectionString]
+    public SqlConnectionStringBuilder ProjectSetting1 { get; set; }
+}
+...
+var config = ConfigurationMapper<ProjectConfiguration>.Map();
+Console.WriteLine(config.ProjectSetting1.InitialCatalog); // "TestDB3".
+```
