@@ -17,7 +17,7 @@ AppSetting attribute has the following parameters:
 ####Sample:####
 
 Consider we have the following appSettings in our configuration file:
-```markup
+```xml
 <appSettings>
     <add key="ProjectSetting1" value="Hello!"/>
     <add key="Equals" value="True"/>        
@@ -51,7 +51,7 @@ ConnectionString attribute has the following parameters:
 ####Sample:####
 
 Consider we have the following connectionStrings in our configuration file:
-```markup
+```xml
 <connectionStrings>
     <add name="PlainCS" connectionString="Data Source=(local);Initial Catalog=TestDB1;Integrated Security=True" providerName="System.Data.SqlClient" />
     <add name="Equals" connectionString="Data Source=(local);Initial Catalog=TestDB2;Integrated Security=True" providerName="System.Data.SqlClient" />
@@ -73,7 +73,7 @@ Console.WriteLine(config.PlainCS); // "Data Source=(local);Initial Catalog=TestD
 Console.WriteLine(config.OverridenName); // "Data Source=(local);Initial Catalog=TestDB2;Integrated Security=True".
 ```
 You can also map connection string to  [SqlConnectionStringBuilder](http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnectionstringbuilder(v=vs.110).aspx) type. For example, you have the following connectionStrings in our configuration file:
-```markup
+```xml
 <connectionStrings>
     <add name="ProjectSetting1" connectionString="Data Source=(local);Initial Catalog=TestDB3;Integrated Security=True" providerName="System.Data.SqlClient" />
 </connectionStrings>
